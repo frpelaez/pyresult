@@ -1,0 +1,30 @@
+name: Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: Test library on Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: configure python 3.12
+        run: uv python install 3.12
+
+      - name: install dependencies
+        run: uv sync
+
+      - name: run pytest
+        run: uv run pytest
